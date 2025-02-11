@@ -14,6 +14,6 @@ RUN apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y jigasi jq && \
     apt-cleanup
 
-COPY rootfs/ /
+COPY rootfs/defaults/sip-communicator.properties /etc/jitsi/jigasi
 
 VOLUME ["/config", "/tmp/transcripts"]
