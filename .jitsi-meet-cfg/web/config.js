@@ -151,8 +151,8 @@ config.enableTcc = true;
 config.useIPv6 = true;
 
 // Transcriptions (subtitles and buttons can be configured in interface_config)
-config.transcription = { enabled: false };
-config.transcription.translationLanguages = [];
+config.transcription = { enabled: true };
+config.transcription.translationLanguages = fr;
 config.transcription.translationLanguagesHead = ['en'];
 config.transcription.useAppLanguage = true;
 config.transcription.preferredLanguage = 'en-US';
