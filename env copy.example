@@ -1,3 +1,4 @@
+
 # shellcheck disable=SC2034
 
 ################################################################################
@@ -16,7 +17,11 @@
 #
 
 # Directory where all configuration will be stored
-CONFIG=~/.jitsi-meet-cfg
+CONFIG=./.jitsi-meet-cfg
+
+JITSI_IMAGE_VERSION=stable-9111
+JICOFO_ENABLE_HEALTH_CHECKS=true
+#JVB_DISABLE_STUN=true
 
 # Exposed HTTP port
 HTTP_PORT=8000
@@ -28,13 +33,14 @@ HTTPS_PORT=8443
 TZ=UTC
 
 # Public URL for the web service (required)
-#PUBLIC_URL=https://meet.example.com
+PUBLIC_URL=https://localhost:8443
 
 # Media IP addresses to advertise by the JVB
 # This setting deprecates DOCKER_HOST_ADDRESS, and supports a comma separated list of IPs
 # See the "Running behind NAT or on a LAN environment" section in the Handbook:
 # https://jitsi.github.io/handbook/docs/devops-guide/devops-guide-docker#running-behind-nat-or-on-a-lan-environment
-#JVB_ADVERTISE_IPS=192.168.1.1,1.2.3.4
+JVB_ADVERTISE_IPS=172.20.11.169
+JVB_DISABLE_STUN=true
 
 #
 # Memory limits for Java components
@@ -43,6 +49,9 @@ TZ=UTC
 #JICOFO_MAX_MEMORY=3072m
 #VIDEOBRIDGE_MAX_MEMORY=3072m
 
+
+#JIGASI MODELs
+MODEL_VERSION=0.22
 #
 # JaaS Components (beta)
 # https://jaas.8x8.vc
@@ -97,19 +106,19 @@ ETHERPAD_SKIN_VARIANTS="super-light-toolbar super-light-editor light-background 
 #
 
 # SIP URI for incoming / outgoing calls
-#JIGASI_SIP_URI=test@sip2sip.info
+JIGASI_SIP_URI=test@sip2sip.info
 
 # Password for the specified SIP account as a clear text
-#JIGASI_SIP_PASSWORD=passw0rd
+JIGASI_SIP_PASSWORD=passw0rd
 
 # SIP server (use the SIP account domain if in doubt)
-#JIGASI_SIP_SERVER=sip2sip.info
+JIGASI_SIP_SERVER=sip2sip.info
 
 # SIP server port
-#JIGASI_SIP_PORT=5060
+JIGASI_SIP_PORT=5060
 
 # SIP server transport
-#JIGASI_SIP_TRANSPORT=UDP
+JIGASI_SIP_TRANSPORT=UDP
 
 
 #
@@ -120,7 +129,7 @@ ETHERPAD_SKIN_VARIANTS="super-light-toolbar super-light-editor light-background 
 #ENABLE_AUTH=1
 
 # Enable guest access
-#ENABLE_GUESTS=1
+ENABLE_GUESTS=1
 
 # Select authentication type: internal, jwt, ldap or matrix
 #AUTH_TYPE=internal
@@ -129,10 +138,10 @@ ETHERPAD_SKIN_VARIANTS="super-light-toolbar super-light-editor light-background 
 #
 
 # Application identifier
-#JWT_APP_ID=my_jitsi_app_id
+JWT_APP_ID=my_jitsi_app_id
 
 # Application secret known only to your token generator
-#JWT_APP_SECRET=my_jitsi_app_secret
+JWT_APP_SECRET=my_jitsi_app_secret
 
 # (Optional) Set asap_accepted_issuers as a comma separated list
 #JWT_ACCEPTED_ISSUERS=my_web_client,my_app_client
@@ -197,19 +206,19 @@ ETHERPAD_SKIN_VARIANTS="super-light-toolbar super-light-editor light-background 
 #
 
 # XMPP password for Jicofo client connections
-JICOFO_AUTH_PASSWORD=
+JICOFO_AUTH_PASSWORD=9a526a6f46eb7ebac01248594b6900c8
 
 # XMPP password for JVB client connections
-JVB_AUTH_PASSWORD=
+JVB_AUTH_PASSWORD=501a5681467c5ef9245e8945a0db832d
 
 # XMPP password for Jigasi MUC client connections
-JIGASI_XMPP_PASSWORD=
+JIGASI_XMPP_PASSWORD=59e2725ac083f07d15ddf12581efd437
 
 # XMPP recorder password for Jibri client connections
-JIBRI_RECORDER_PASSWORD=
+JIBRI_RECORDER_PASSWORD=9b73ecb67bfa5836196f71a68eafdbb3
 
 # XMPP password for Jibri client connections
-JIBRI_XMPP_PASSWORD=
+JIBRI_XMPP_PASSWORD=9c7c0ddf2772207d73339170bb2aa33f
 
 #
 # Docker Compose options
@@ -220,3 +229,17 @@ JIBRI_XMPP_PASSWORD=
 
 # Jitsi image version (useful for local development)
 #JITSI_IMAGE_VERSION=latest
+
+#Jitsi web
+
+
+ENABLE_TRANSCRIPTIONS=true
+
+JIGASI_TRANSCRIBER_RECORD_AUDIO=true
+JIGASI_TRANSCRIBER_SEND_TXT=true
+
+
+TRANSLATION_LANGUAGES=fr
+#ENABLE_TRANSCRIPTIONS=1
+JIGASI_SIP_URI=vosk@localhost
+JIGASI_TRANSCRIBER_ADVERTISE_URL=ws://vosk:2700

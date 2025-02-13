@@ -1,6 +1,7 @@
 ARG JITSI_REPO=jitsi
 ARG BASE_TAG=latest
-FROM ${JITSI_REPO}/base:${BASE_TAG}
+FROM jitsi/jigasi:stable
+#${JITSI_REPO}/base:${BASE_TAG}
 
 LABEL org.opencontainers.image.title="Jitsi Meet"
 LABEL org.opencontainers.image.description="WebRTC compatible JavaScript application that uses Jitsi Videobridge to provide high quality, scalable video conferences."
@@ -9,7 +10,9 @@ LABEL org.opencontainers.image.source="https://github.com/jitsi/docker-jitsi-mee
 LABEL org.opencontainers.image.documentation="https://jitsi.github.io/handbook/"
 
 ADD https://raw.githubusercontent.com/acmesh-official/acme.sh/2.8.8/acme.sh /opt
-COPY rootfs/ /
+
+COPY  rootfs/defaults/config.js /config
+
 
 RUN apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y dnsutils cron nginx-extras jitsi-meet-web socat curl jq && \
