@@ -1,4 +1,3 @@
-
 services:
     # Frontend
     web:
@@ -12,6 +11,7 @@ services:
             - ${CONFIG}/web:/config:Z
             - ${CONFIG}/web/crontabs:/var/spool/cron/crontabs:Z
             - ${CONFIG}/transcripts:/usr/share/jitsi-meet/transcripts:Z
+            # - /web/rootfs/defaults/config.js:/config
         environment:
             - AMPLITUDE_ID
             - ANALYTICS_SCRIPT_URLS
@@ -167,7 +167,7 @@ services:
         networks:
             meet.jitsi:
 
-    # XMPP server
+                # XMPP server
     prosody:
         container_name: prosody
         image: jitsi/prosody:${JITSI_IMAGE_VERSION:-unstable}
@@ -382,7 +382,7 @@ services:
         networks:
             meet.jitsi:
 
-    # Video bridge
+                # Video bridge
     jvb:
         container_name: jvb
         image: jitsi/jvb:${JITSI_IMAGE_VERSION:-unstable}
@@ -450,6 +450,10 @@ services:
             - '${JIGASI_PORT_MIN:-20000}-${JIGASI_PORT_MAX:-20050}:${JIGASI_PORT_MIN:-20000}-${JIGASI_PORT_MAX:-20050}/udp'
         volumes:
             - ${CONFIG}/jigasi:/config:Z
+            - ./jigasi/rootfs/defaults/sip-communicator.properties:/config/custom-sip-communicator.properties
+            # - ./jigasi/rootfs/etc/cont-init.d/10-config:/etc/cont-init.d/10-config
+            # - ./jigasi/rootfs/defaults/sip-communicator.properties:/defaults/sip-communicator.properties
+
         environment:
             - AUTOSCALER_SIDECAR_KEY_FILE
             - AUTOSCALER_SIDECAR_KEY_ID
@@ -465,6 +469,7 @@ services:
             - ENABLE_AUTH
             - ENABLE_GUESTS
             - ENABLE_VISITORS
+            - ENABLE_TRANSCRIPTIONS
             - XMPP_AUTH_DOMAIN
             - XMPP_GUEST_DOMAIN
             - XMPP_MUC_DOMAIN
@@ -497,6 +502,9 @@ services:
             - JIGASI_VISITORS_QUEUE_SERVICE_URL
             - JIGASI_VISITORS_QUEUE_SERVICE_PRIVATE_KEY_PATH
             - JIGASI_VISITORS_QUEUE_SERVICE_PRIVATE_KEY_ID
+            - JIGASI_TRANSCRIBER_ADVERTISE_URL
+            - JIGASI_TRANSCRIBER_RECORD_AUDIO
+            - JIGASI_TRANSCRIBER_SEND_TXT
             - SHUTDOWN_REST_ENABLED
             - SENTRY_DSN="${JIGASI_SENTRY_DSN:-0}"
             - SENTRY_ENVIRONMENT
@@ -508,24 +516,22 @@ services:
         networks:
             meet.jitsi:
 
+
     vosk:
-        build: 
+        build:
             context: ./vosk
             dockerfile: Dockerfile
-        ports: 
+        ports:
             - '2700:2700'
         environment:
             - MODEL_VERSION
         restart: always
 
-
-        
-
 # Custom network so all services can communicate using a FQDN
 networks:
     meet.jitsi:
-      ipam:
-        driver: default
-        config:
-          - subnet: 172.22.0.0/16
-            ip_range: 172.22.0.0/16
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.22.0.0/16
+                  ip_range: 172.22.0.0/16
